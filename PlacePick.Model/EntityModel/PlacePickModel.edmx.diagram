@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="2533ef8fd4204b04ba0edc70eda26c4b" Name="Diagram1">
+        <EntityTypeShape EntityType="PlacePickModel.Audio" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
+        <EntityTypeShape EntityType="PlacePickModel.Image" Width="1.5" PointX="3" PointY="7.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="PlacePickModel.Point" Width="1.5" PointX="5.25" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="PlacePickModel.Route" Width="1.5" PointX="3" PointY="3.625" IsExpanded="true" />
+        <EntityTypeShape EntityType="PlacePickModel.Tag" Width="1.5" PointX="5.25" PointY="7.875" IsExpanded="true" />
+        <EntityTypeShape EntityType="PlacePickModel.User" Width="1.5" PointX="0.75" PointY="4" IsExpanded="true" />
+        <EntityTypeShape EntityType="PlacePickModel.Vote" Width="1.5" PointX="8.25" PointY="4.125" IsExpanded="true" />
+        <AssociationConnector Association="PlacePickModel.FK_Points_Routes" ManuallyRouted="false" />
+        <AssociationConnector Association="PlacePickModel.FK_Routes_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="PlacePickModel.FK_Votes_Routes" ManuallyRouted="false" />
+        <AssociationConnector Association="PlacePickModel.FK_Votes_Users" ManuallyRouted="false" />
+        <AssociationConnector Association="PlacePickModel.AudiosInPoints" ManuallyRouted="false" />
+        <AssociationConnector Association="PlacePickModel.ImagesInPoints" ManuallyRouted="false" />
+        <AssociationConnector Association="PlacePickModel.TagsInRoutes" ManuallyRouted="false" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

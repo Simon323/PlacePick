@@ -1,0 +1,613 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+  <!-- EF Runtime content -->
+  <edmx:Runtime>
+    <!-- SSDL content -->
+    <edmx:StorageModels>
+      <Schema Namespace="PlacePickModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+        <EntityType Name="Audios">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Guid" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Location" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PlacePick.dbo.AudiosInPoints' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="AudiosInPoints">
+          <Key>
+            <PropertyRef Name="PointId" />
+            <PropertyRef Name="AudioId" />
+          </Key>
+          <Property Name="PointId" Type="int" Nullable="false" />
+          <Property Name="AudioId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Images">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Guid" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Location" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PlacePick.dbo.ImagesInPoints' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="ImagesInPoints">
+          <Key>
+            <PropertyRef Name="PointId" />
+            <PropertyRef Name="ImageId" />
+          </Key>
+          <Property Name="PointId" Type="int" Nullable="false" />
+          <Property Name="ImageId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Points">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Description" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="ImageId" Type="int" />
+          <Property Name="AudioId" Type="int" />
+          <Property Name="RouteId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Routes">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Duration" Type="datetime" Nullable="false" />
+          <Property Name="City" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="CreatorId" Type="int" />
+          <Property Name="KML" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Tags">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <!--Errors Found During Generation:
+warning 6002: The table/view 'PlacePick.dbo.TagsInRoutes' does not have a primary key defined. The key has been inferred and the definition was created as a read-only table/view.-->
+        <EntityType Name="TagsInRoutes">
+          <Key>
+            <PropertyRef Name="TagId" />
+            <PropertyRef Name="RouteId" />
+          </Key>
+          <Property Name="TagId" Type="int" Nullable="false" />
+          <Property Name="RouteId" Type="int" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Users">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Surname" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="E-mail" Type="nvarchar(max)" Nullable="false" />
+        </EntityType>
+        <EntityType Name="Votes">
+          <Key>
+            <PropertyRef Name="RouteId" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="RouteId" Type="int" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="Rate" Type="int" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_AudiosInPoints_Audios">
+          <End Role="Audios" Type="Self.Audios" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AudiosInPoints" Type="Self.AudiosInPoints" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Audios">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AudiosInPoints">
+              <PropertyRef Name="AudioId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_AudiosInPoints_Points">
+          <End Role="Points" Type="Self.Points" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="AudiosInPoints" Type="Self.AudiosInPoints" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Points">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="AudiosInPoints">
+              <PropertyRef Name="PointId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ImagesInPoints_Images">
+          <End Role="Images" Type="Self.Images" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ImagesInPoints" Type="Self.ImagesInPoints" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Images">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ImagesInPoints">
+              <PropertyRef Name="ImageId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_ImagesInPoints_Points">
+          <End Role="Points" Type="Self.Points" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="ImagesInPoints" Type="Self.ImagesInPoints" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Points">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="ImagesInPoints">
+              <PropertyRef Name="PointId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Points_Routes">
+          <End Role="Routes" Type="Self.Routes" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Points" Type="Self.Points" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Routes">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Points">
+              <PropertyRef Name="RouteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Routes_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="0..1" />
+          <End Role="Routes" Type="Self.Routes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Routes">
+              <PropertyRef Name="CreatorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TagsInRoutes_Routes">
+          <End Role="Routes" Type="Self.Routes" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TagsInRoutes" Type="Self.TagsInRoutes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Routes">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="TagsInRoutes">
+              <PropertyRef Name="RouteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_TagsInRoutes_Tags">
+          <End Role="Tags" Type="Self.Tags" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="TagsInRoutes" Type="Self.TagsInRoutes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Tags">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="TagsInRoutes">
+              <PropertyRef Name="TagId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Votes_Routes">
+          <End Role="Routes" Type="Self.Routes" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Votes" Type="Self.Votes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Routes">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Votes">
+              <PropertyRef Name="RouteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Votes_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Votes" Type="Self.Votes" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Votes">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="PlacePickModelStoreContainer">
+          <EntitySet Name="Audios" EntityType="Self.Audios" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Images" EntityType="Self.Images" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Points" EntityType="Self.Points" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Routes" EntityType="Self.Routes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Tags" EntityType="Self.Tags" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Votes" EntityType="Self.Votes" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="AudiosInPoints" EntityType="Self.AudiosInPoints" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [AudiosInPoints].[PointId] AS [PointId], 
+    [AudiosInPoints].[AudioId] AS [AudioId]
+    FROM [dbo].[AudiosInPoints] AS [AudiosInPoints]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="ImagesInPoints" EntityType="Self.ImagesInPoints" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [ImagesInPoints].[PointId] AS [PointId], 
+    [ImagesInPoints].[ImageId] AS [ImageId]
+    FROM [dbo].[ImagesInPoints] AS [ImagesInPoints]</DefiningQuery>
+          </EntitySet>
+          <EntitySet Name="TagsInRoutes" EntityType="Self.TagsInRoutes" store:Type="Tables" store:Schema="dbo">
+            <DefiningQuery>SELECT 
+    [TagsInRoutes].[TagId] AS [TagId], 
+    [TagsInRoutes].[RouteId] AS [RouteId]
+    FROM [dbo].[TagsInRoutes] AS [TagsInRoutes]</DefiningQuery>
+          </EntitySet>
+          <AssociationSet Name="FK_AudiosInPoints_Audios" Association="Self.FK_AudiosInPoints_Audios">
+            <End Role="Audios" EntitySet="Audios" />
+            <End Role="AudiosInPoints" EntitySet="AudiosInPoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_AudiosInPoints_Points" Association="Self.FK_AudiosInPoints_Points">
+            <End Role="Points" EntitySet="Points" />
+            <End Role="AudiosInPoints" EntitySet="AudiosInPoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ImagesInPoints_Images" Association="Self.FK_ImagesInPoints_Images">
+            <End Role="Images" EntitySet="Images" />
+            <End Role="ImagesInPoints" EntitySet="ImagesInPoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_ImagesInPoints_Points" Association="Self.FK_ImagesInPoints_Points">
+            <End Role="Points" EntitySet="Points" />
+            <End Role="ImagesInPoints" EntitySet="ImagesInPoints" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Points_Routes" Association="Self.FK_Points_Routes">
+            <End Role="Routes" EntitySet="Routes" />
+            <End Role="Points" EntitySet="Points" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Routes_Users" Association="Self.FK_Routes_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Routes" EntitySet="Routes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TagsInRoutes_Routes" Association="Self.FK_TagsInRoutes_Routes">
+            <End Role="Routes" EntitySet="Routes" />
+            <End Role="TagsInRoutes" EntitySet="TagsInRoutes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_TagsInRoutes_Tags" Association="Self.FK_TagsInRoutes_Tags">
+            <End Role="Tags" EntitySet="Tags" />
+            <End Role="TagsInRoutes" EntitySet="TagsInRoutes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Votes_Routes" Association="Self.FK_Votes_Routes">
+            <End Role="Routes" EntitySet="Routes" />
+            <End Role="Votes" EntitySet="Votes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Votes_Users" Association="Self.FK_Votes_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Votes" EntitySet="Votes" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:StorageModels>
+    <!-- CSDL content -->
+    <edmx:ConceptualModels>
+      <Schema Namespace="PlacePickModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+        <EntityType Name="Audio">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Guid" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Points" Relationship="Self.AudiosInPoints" FromRole="Audios" ToRole="Points" />
+        </EntityType>
+        <EntityType Name="Image">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Guid" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Location" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Points" Relationship="Self.ImagesInPoints" FromRole="Images" ToRole="Points" />
+        </EntityType>
+        <EntityType Name="Point">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="ImageId" Type="Int32" />
+          <Property Name="AudioId" Type="Int32" />
+          <Property Name="RouteId" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Route" Relationship="Self.FK_Points_Routes" FromRole="Points" ToRole="Routes" />
+          <NavigationProperty Name="Audios" Relationship="Self.AudiosInPoints" FromRole="Points" ToRole="Audios" />
+          <NavigationProperty Name="Images" Relationship="Self.ImagesInPoints" FromRole="Points" ToRole="Images" />
+        </EntityType>
+        <EntityType Name="Route">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Duration" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="City" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="CreatorId" Type="Int32" />
+          <Property Name="KML" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Points" Relationship="Self.FK_Points_Routes" FromRole="Routes" ToRole="Points" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Routes_Users" FromRole="Routes" ToRole="Users" />
+          <NavigationProperty Name="Votes" Relationship="Self.FK_Votes_Routes" FromRole="Routes" ToRole="Votes" />
+          <NavigationProperty Name="Tags" Relationship="Self.TagsInRoutes" FromRole="Routes" ToRole="Tags" />
+        </EntityType>
+        <EntityType Name="Tag">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Routes" Relationship="Self.TagsInRoutes" FromRole="Tags" ToRole="Routes" />
+        </EntityType>
+        <EntityType Name="User">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="Surname" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <Property Name="E_mail" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
+          <NavigationProperty Name="Routes" Relationship="Self.FK_Routes_Users" FromRole="Users" ToRole="Routes" />
+          <NavigationProperty Name="Votes" Relationship="Self.FK_Votes_Users" FromRole="Users" ToRole="Votes" />
+        </EntityType>
+        <EntityType Name="Vote">
+          <Key>
+            <PropertyRef Name="RouteId" />
+            <PropertyRef Name="UserId" />
+          </Key>
+          <Property Name="RouteId" Type="Int32" Nullable="false" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="Rate" Type="Int32" Nullable="false" />
+          <NavigationProperty Name="Route" Relationship="Self.FK_Votes_Routes" FromRole="Votes" ToRole="Routes" />
+          <NavigationProperty Name="User" Relationship="Self.FK_Votes_Users" FromRole="Votes" ToRole="Users" />
+        </EntityType>
+        <Association Name="FK_Points_Routes">
+          <End Role="Routes" Type="Self.Route" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Points" Type="Self.Point" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Routes">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Points">
+              <PropertyRef Name="RouteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Routes_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="0..1" />
+          <End Role="Routes" Type="Self.Route" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Routes">
+              <PropertyRef Name="CreatorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Votes_Routes">
+          <End Role="Routes" Type="Self.Route" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Votes" Type="Self.Vote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Routes">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Votes">
+              <PropertyRef Name="RouteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Votes_Users">
+          <End Role="Users" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Votes" Type="Self.Vote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Votes">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="AudiosInPoints">
+          <End Role="Audios" Type="Self.Audio" Multiplicity="*" />
+          <End Role="Points" Type="Self.Point" Multiplicity="*" />
+        </Association>
+        <Association Name="ImagesInPoints">
+          <End Role="Images" Type="Self.Image" Multiplicity="*" />
+          <End Role="Points" Type="Self.Point" Multiplicity="*" />
+        </Association>
+        <Association Name="TagsInRoutes">
+          <End Role="Routes" Type="Self.Route" Multiplicity="*" />
+          <End Role="Tags" Type="Self.Tag" Multiplicity="*" />
+        </Association>
+        <EntityContainer Name="PlacePickEntities" annotation:LazyLoadingEnabled="true">
+          <EntitySet Name="Audios" EntityType="Self.Audio" />
+          <EntitySet Name="Images" EntityType="Self.Image" />
+          <EntitySet Name="Points" EntityType="Self.Point" />
+          <EntitySet Name="Routes" EntityType="Self.Route" />
+          <EntitySet Name="Tags" EntityType="Self.Tag" />
+          <EntitySet Name="Users" EntityType="Self.User" />
+          <EntitySet Name="Votes" EntityType="Self.Vote" />
+          <AssociationSet Name="FK_Points_Routes" Association="Self.FK_Points_Routes">
+            <End Role="Routes" EntitySet="Routes" />
+            <End Role="Points" EntitySet="Points" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Routes_Users" Association="Self.FK_Routes_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Routes" EntitySet="Routes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Votes_Routes" Association="Self.FK_Votes_Routes">
+            <End Role="Routes" EntitySet="Routes" />
+            <End Role="Votes" EntitySet="Votes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Votes_Users" Association="Self.FK_Votes_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Votes" EntitySet="Votes" />
+          </AssociationSet>
+          <AssociationSet Name="AudiosInPoints" Association="Self.AudiosInPoints">
+            <End Role="Audios" EntitySet="Audios" />
+            <End Role="Points" EntitySet="Points" />
+          </AssociationSet>
+          <AssociationSet Name="ImagesInPoints" Association="Self.ImagesInPoints">
+            <End Role="Images" EntitySet="Images" />
+            <End Role="Points" EntitySet="Points" />
+          </AssociationSet>
+          <AssociationSet Name="TagsInRoutes" Association="Self.TagsInRoutes">
+            <End Role="Routes" EntitySet="Routes" />
+            <End Role="Tags" EntitySet="Tags" />
+          </AssociationSet>
+        </EntityContainer>
+      </Schema>
+    </edmx:ConceptualModels>
+    <!-- C-S mapping content -->
+    <edmx:Mappings>
+      <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
+        <EntityContainerMapping StorageEntityContainer="PlacePickModelStoreContainer" CdmEntityContainer="PlacePickEntities">
+          <EntitySetMapping Name="Audios">
+            <EntityTypeMapping TypeName="PlacePickModel.Audio">
+              <MappingFragment StoreEntitySet="Audios">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Guid" ColumnName="Guid" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Images">
+            <EntityTypeMapping TypeName="PlacePickModel.Image">
+              <MappingFragment StoreEntitySet="Images">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Guid" ColumnName="Guid" />
+                <ScalarProperty Name="Location" ColumnName="Location" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Points">
+            <EntityTypeMapping TypeName="PlacePickModel.Point">
+              <MappingFragment StoreEntitySet="Points">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Description" ColumnName="Description" />
+                <ScalarProperty Name="ImageId" ColumnName="ImageId" />
+                <ScalarProperty Name="AudioId" ColumnName="AudioId" />
+                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Routes">
+            <EntityTypeMapping TypeName="PlacePickModel.Route">
+              <MappingFragment StoreEntitySet="Routes">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="CreatorId" ColumnName="CreatorId" />
+                <ScalarProperty Name="KML" ColumnName="KML" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Tags">
+            <EntityTypeMapping TypeName="PlacePickModel.Tag">
+              <MappingFragment StoreEntitySet="Tags">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Users">
+            <EntityTypeMapping TypeName="PlacePickModel.User">
+              <MappingFragment StoreEntitySet="Users">
+                <ScalarProperty Name="id" ColumnName="id" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="Surname" ColumnName="Surname" />
+                <ScalarProperty Name="E_mail" ColumnName="E-mail" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Votes">
+            <EntityTypeMapping TypeName="PlacePickModel.Vote">
+              <MappingFragment StoreEntitySet="Votes">
+                <ScalarProperty Name="RouteId" ColumnName="RouteId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="Rate" ColumnName="Rate" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="AudiosInPoints" TypeName="PlacePickModel.AudiosInPoints" StoreEntitySet="AudiosInPoints">
+            <EndProperty Name="Audios">
+              <ScalarProperty Name="id" ColumnName="AudioId" />
+            </EndProperty>
+            <EndProperty Name="Points">
+              <ScalarProperty Name="id" ColumnName="PointId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="ImagesInPoints" TypeName="PlacePickModel.ImagesInPoints" StoreEntitySet="ImagesInPoints">
+            <EndProperty Name="Images">
+              <ScalarProperty Name="id" ColumnName="ImageId" />
+            </EndProperty>
+            <EndProperty Name="Points">
+              <ScalarProperty Name="id" ColumnName="PointId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <AssociationSetMapping Name="TagsInRoutes" TypeName="PlacePickModel.TagsInRoutes" StoreEntitySet="TagsInRoutes">
+            <EndProperty Name="Routes">
+              <ScalarProperty Name="id" ColumnName="RouteId" />
+            </EndProperty>
+            <EndProperty Name="Tags">
+              <ScalarProperty Name="id" ColumnName="TagId" />
+            </EndProperty>
+          </AssociationSetMapping>
+        </EntityContainerMapping>
+      </Mapping>
+    </edmx:Mappings>
+  </edmx:Runtime>
+  <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <Connection>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="MetadataArtifactProcessing" Value="EmbedInOutputAssembly" />
+      </DesignerInfoPropertySet>
+    </Connection>
+    <Options>
+      <DesignerInfoPropertySet>
+        <DesignerProperty Name="ValidateOnBuild" Value="true" />
+        <DesignerProperty Name="EnablePluralization" Value="true" />
+        <DesignerProperty Name="IncludeForeignKeysInModel" Value="true" />
+        <DesignerProperty Name="UseLegacyProvider" Value="false" />
+        <DesignerProperty Name="CodeGenerationStrategy" Value="None" />
+      </DesignerInfoPropertySet>
+    </Options>
+    <!-- Diagram content (shape and connector positions) -->
+    <Diagrams></Diagrams>
+  </Designer>
+</edmx:Edmx>

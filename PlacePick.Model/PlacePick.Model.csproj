@@ -39,6 +39,8 @@
     <Reference Include="System" />
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Security" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -46,14 +48,68 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EntityModel\Audio.cs">
+      <DependentUpon>PlacePickModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\Image.cs">
+      <DependentUpon>PlacePickModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\PlacePickModel.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PlacePickModel.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\PlacePickModel.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PlacePickModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\PlacePickModel.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>PlacePickModel.edmx</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\Point.cs">
+      <DependentUpon>PlacePickModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\Route.cs">
+      <DependentUpon>PlacePickModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\Tag.cs">
+      <DependentUpon>PlacePickModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\User.cs">
+      <DependentUpon>PlacePickModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\Vote.cs">
+      <DependentUpon>PlacePickModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
+    <None Include="App.config">
+      <SubType>Designer</SubType>
+    </None>
+    <EntityDeploy Include="EntityModel\PlacePickModel.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>PlacePickModel.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <None Include="EntityModel\PlacePickModel.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PlacePickModel.edmx</DependentUpon>
+      <LastGenOutput>PlacePickModel.Context.cs</LastGenOutput>
+    </None>
+    <None Include="EntityModel\PlacePickModel.edmx.diagram">
+      <DependentUpon>PlacePickModel.edmx</DependentUpon>
+    </None>
+    <None Include="EntityModel\PlacePickModel.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>PlacePickModel.edmx</DependentUpon>
+      <LastGenOutput>PlacePickModel.cs</LastGenOutput>
+    </None>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="EntityModel\" />
     <Folder Include="Models\" />
     <Folder Include="Repository\Interfaces\" />
   </ItemGroup>
@@ -62,6 +118,9 @@
       <Project>{6cc62c7f-68c0-4be4-92d0-a5e1d629047a}</Project>
       <Name>PlacePick.DBContextRepository</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
