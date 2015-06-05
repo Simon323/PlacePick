@@ -12,21 +12,12 @@ namespace PlacePick.Model.EntityModel
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class AspNetUserLogin
     {
-        public User()
-        {
-            this.Routes = new HashSet<Route>();
-            this.Votes = new HashSet<Vote>();
-        }
-    
-        public int id { get; set; }
-        public string AspNetUserId { get; set; }
-        public string Name { get; set; }
-        public string Surname { get; set; }
+        public string LoginProvider { get; set; }
+        public string ProviderKey { get; set; }
+        public string UserId { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
-        public virtual ICollection<Route> Routes { get; set; }
-        public virtual ICollection<Vote> Votes { get; set; }
     }
 }

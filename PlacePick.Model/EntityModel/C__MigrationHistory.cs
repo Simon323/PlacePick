@@ -12,21 +12,11 @@ namespace PlacePick.Model.EntityModel
     using System;
     using System.Collections.Generic;
     
-    public partial class User
+    public partial class C__MigrationHistory
     {
-        public User()
-        {
-            this.Routes = new HashSet<Route>();
-            this.Votes = new HashSet<Vote>();
-        }
-    
-        public int id { get; set; }
-        public string AspNetUserId { get; set; }
-        public string Name { get; set; }
-        public string Surname { get; set; }
-    
-        public virtual AspNetUser AspNetUser { get; set; }
-        public virtual ICollection<Route> Routes { get; set; }
-        public virtual ICollection<Vote> Votes { get; set; }
+        public string MigrationId { get; set; }
+        public string ContextKey { get; set; }
+        public byte[] Model { get; set; }
+        public string ProductVersion { get; set; }
     }
 }

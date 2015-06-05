@@ -29,8 +29,8 @@ namespace PlacePick.Model.EntityModel
         public string KML { get; set; }
     
         public virtual ICollection<Point> Points { get; set; }
-        public virtual User User { get; set; }
         public virtual ICollection<Vote> Votes { get; set; }
         public virtual ICollection<Tag> Tags { get; set; }
+        public virtual User User { get; set; }
     }
 }

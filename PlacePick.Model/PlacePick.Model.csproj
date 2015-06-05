@@ -48,7 +48,22 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EntityModel\AspNetRole.cs">
+      <DependentUpon>PlacePickModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\AspNetUser.cs">
+      <DependentUpon>PlacePickModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\AspNetUserClaim.cs">
+      <DependentUpon>PlacePickModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\AspNetUserLogin.cs">
+      <DependentUpon>PlacePickModel.tt</DependentUpon>
+    </Compile>
     <Compile Include="EntityModel\Audio.cs">
+      <DependentUpon>PlacePickModel.tt</DependentUpon>
+    </Compile>
+    <Compile Include="EntityModel\C__MigrationHistory.cs">
       <DependentUpon>PlacePickModel.tt</DependentUpon>
     </Compile>
     <Compile Include="EntityModel\Image.cs">
