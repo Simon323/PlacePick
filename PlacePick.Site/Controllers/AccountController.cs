@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using PlacePick.Site.Models;
+using PlacePick.Model.Repository.Interfaces;
+using PlacePick.Model.Repository;
 
 namespace PlacePick.Site.Controllers
 {
@@ -79,7 +81,8 @@ namespace PlacePick.Site.Controllers
             switch (result)
             {
                 case SignInStatus.Success:
-                    return RedirectToLocal(returnUrl);
+                    //return RedirectToLocal(returnUrl);
+                    return RedirectToAction("RoutesList", "Routes");
                 case SignInStatus.LockedOut:
                     return View("Lockout");
                 case SignInStatus.RequiresVerification:
@@ -162,6 +165,11 @@ namespace PlacePick.Site.Controllers
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+                    IUserRepository userRepository = new UserRepository();
+                    PlacePick.Model.EntityModel.User userToAdd = new PlacePick.Model.EntityModel.User();
+                    userToAdd.AspNetUserId = user.Id;
+                    userRepository.Add(userToAdd);
+                    userRepository.Save();
 
                     return RedirectToAction("Index", "Home");
                 }

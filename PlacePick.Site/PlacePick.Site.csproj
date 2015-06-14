@@ -176,13 +176,16 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
+    <Compile Include="Controllers\RoutesController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Models\AccountViewModels.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\RoutesModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Providers\KMLProvider.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -255,6 +258,9 @@
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Routes\RoutesList.cshtml" />
+    <Content Include="Views\Routes\RoutesAdd.cshtml" />
+    <Content Include="Views\Routes\RoutesDetails.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
@@ -264,6 +270,10 @@
     <None Include="Project_Readme.html" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\PlacePick.DBContextRepository\PlacePick.DBContextRepository.csproj">
+      <Project>{6cc62c7f-68c0-4be4-92d0-a5e1d629047a}</Project>
+      <Name>PlacePick.DBContextRepository</Name>
+    </ProjectReference>
     <ProjectReference Include="..\PlacePick.Model\PlacePick.Model.csproj">
       <Project>{e3008e3b-c25f-4f03-b7ad-ce63118255f4}</Project>
       <Name>PlacePick.Model</Name>

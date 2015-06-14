@@ -1,0 +1,278 @@
+﻿<div id="panel">
+    <div id="color-palette"></div>
+    <div>
+        <button id="delete-button">Delete Selected Shape</button>
+        <button id="get-points">Get Points</button>
+        <button id="generate-kml">Generate KML</button>
+        <button id="points">Punkty</button>
+        <button id="route">Trasa</button>
+        @*<button id="next-step" type="submit">Dalej</button>*@
+        @using (Html.BeginForm("RoutesAdd", "Routes", FormMethod.Post, new { enctype = "multipart/form-data" }))
+        {
+            @Html.ValidationSummary(true)
+            <fieldset>
+                <input id="PolylinePoints" name="PolylinePoints" value="[]" type="hidden" />
+                <input id="MarkerPoints" name="MarkerPoints" value="[]" type="hidden" />
+                <input type="submit" value="Dalej" />
+            </fieldset>
+        }
+    </div>
+</div>
+<div id="map"></div>
+
+<script>
+    var drawingManager;
+    var selectedShape;
+    var colors = ['#1E90FF', '#FF1493', '#32CD32', '#FF8C00', '#4B0082'];
+    var selectedColor;
+    var colorButtons = {};
+    var blutvene = [];
+    var volstanding = [];
+    var porownanie = null;
+
+
+    function clearSelection() {
+        if (selectedShape) {
+            selectedShape.setEditable(false);
+            selectedShape = null;
+        }
+    }
+
+    function setSelection(shape) {
+        clearSelection();
+        selectedShape = shape;
+        shape.setEditable(true);
+        selectColor(shape.get('fillColor') || shape.get('strokeColor'));
+    }
+
+    function deleteSelectedShape() {
+        if (selectedShape) {
+
+            var temp = selectedShape.getPath();
+            console.log(temp);
+            for (var j = 0; j < temp.length; j++) {
+                console.log(temp.getAt(j));
+            }
+            //selectedShape.setMap(null);
+        }
+    }
+
+    function selectColor(color) {
+        selectedColor = color;
+        for (var i = 0; i < colors.length; ++i) {
+            var currColor = colors[i];
+            colorButtons[currColor].style.border = currColor == color ? '2px solid #789' : '2px solid #fff';
+        }
+
+        // Retrieves the current options from the drawing manager and replaces the
+        // stroke or fill color as appropriate.
+        var polylineOptions = drawingManager.get('polylineOptions');
+        polylineOptions.strokeColor = color;
+        drawingManager.set('polylineOptions', polylineOptions);
+
+        /*        var rectangleOptions = drawingManager.get('rectangleOptions');
+                rectangleOptions.fillColor = color;
+                drawingManager.set('rectangleOptions', rectangleOptions);
+        
+                var circleOptions = drawingManager.get('circleOptions');
+                circleOptions.fillColor = color;
+                drawingManager.set('circleOptions', circleOptions);
+        
+                var polygonOptions = drawingManager.get('polygonOptions');
+                polygonOptions.fillColor = color;
+                drawingManager.set('polygonOptions', polygonOptions);*/
+    }
+
+    function setSelectedShapeColor(color) {
+        if (selectedShape) {
+            if (selectedShape.type == google.maps.drawing.OverlayType.POLYLINE) {
+                selectedShape.set('strokeColor', color);
+            } else {
+                selectedShape.set('fillColor', color);
+            }
+        }
+    }
+
+    function makeColorButton(color) {
+        var button = document.createElement('span');
+        button.className = 'color-button';
+        button.style.backgroundColor = color;
+        google.maps.event.addDomListener(button, 'click', function () {
+            selectColor(color);
+            setSelectedShapeColor(color);
+        });
+
+        return button;
+    }
+
+    function buildColorPalette() {
+        var colorPalette = document.getElementById('color-palette');
+        for (var i = 0; i < colors.length; ++i) {
+            var currColor = colors[i];
+            var colorButton = makeColorButton(currColor);
+            colorPalette.appendChild(colorButton);
+            colorButtons[currColor] = colorButton;
+        }
+        selectColor(colors[0]);
+    }
+
+    function GetCurrentLocation() {
+        if (navigator.geolocation) {
+
+            //Use HTML5 Geolocation API To Get Current Position
+            navigator.geolocation.getCurrentPosition(function (position) {
+
+                //Get Latitude From Geolocation API
+                var latitude = position.coords.latitude;
+
+                //Get Longitude From Geolocation API
+                var longitude = position.coords.longitude;
+
+                //Define New Google Map With Lat / Lon
+                var coords = new google.maps.LatLng(latitude, longitude);
+
+                return coords;
+            })
+        } else {
+            var coords = new google.maps.LatLng(52.40482111297626, 16.950573921203613);
+            return coords;
+        }
+    }
+
+    function initialize() {
+        
+        var map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 16,
+            /*center: new google.maps.LatLng(0.0, 0.0),*/
+            //center: new google.maps.LatLng(52.40482111297626, 16.950573921203613),
+            center: new google.maps.LatLng(52.40482111297626, 16.950573921203613),
+            mapTypeId: google.maps.MapTypeId.ROADMAP,
+            disableDefaultUI: true,
+            zoomControl: true
+        });
+
+        var polyOptions = {
+            strokeWeight: 0,
+            fillOpacity: 0.45,
+            editable: true
+        };
+        // Creates a drawing manager attached to the map that allows the user to draw
+        // markers, lines, and shapes.
+        drawingManager = new google.maps.drawing.DrawingManager({
+            drawingMode: google.maps.drawing.OverlayType.POLYLINE,
+            drawingControl: true,
+            drawingControlOptions: {
+                position: google.maps.ControlPosition.TOP_CENTER,
+                drawingModes: [google.maps.drawing.OverlayType.POLYLINE, google.maps.drawing.OverlayType.MARKER]
+            },
+            markerOptions: {
+                draggable: true
+            },
+            polylineOptions: {
+                clickable: true,
+                editable: true
+            },/*
+          rectangleOptions: polyOptions,
+          circleOptions: polyOptions,
+          polygonOptions: polyOptions,*/
+            map: map
+        });
+
+
+        google.maps.event.addListener(drawingManager, 'overlaycomplete', function (e) {
+            if (e.type != google.maps.drawing.OverlayType.MARKER) {
+                // Switch back to non-drawing mode after drawing a shape.
+                drawingManager.setDrawingMode(null);
+
+                // Add an event listener that selects the newly-drawn shape when the user
+                // mouses down on it.
+                var newShape = e.overlay;
+                newShape.type = e.type;
+                google.maps.event.addListener(newShape, 'click', function () {
+                    setSelection(newShape);
+                });
+                setSelection(newShape);
+            }
+        });
+
+
+        google.maps.event.addDomListener(drawingManager, 'polylinecomplete', function (line) {
+            blutvene.push(line);
+            path = line.getPath();
+            //console.log("Wypsiuje to co zaznaczone");
+            for (var i = 0; i < path.length; i++) {
+                //console.log(path.getAt(i));
+            }
+        });
+
+
+        google.maps.event.addDomListener(drawingManager, 'markercomplete', function (marker) {
+            //volstanding.push(marker.getPosition());
+            volstanding.push(marker);
+        });
+
+
+        // Clear the current selection when the drawing mode is changed, or when the
+        // map is clicked.
+        google.maps.event.addListener(drawingManager, 'drawingmode_changed', clearSelection);
+        google.maps.event.addListener(map, 'click', clearSelection);
+        google.maps.event.addDomListener(document.getElementById('delete-button'), 'click', deleteSelectedShape);
+
+        buildColorPalette();
+
+        //var ctaLayer = new google.maps.KmlLayer({
+        //    url: 'http://zacne.c0.pl/newkm.kml' + "?dummy=" + (new Date()).getTime()
+        //});
+        //ctaLayer.setMap(map);
+    }
+    /*google.maps.event.addDomListener(window, 'load', initialize);*/
+
+    $(document).ready(function () {
+        initialize();
+
+        $("#points").click(function () {
+            var markerPointsTab = new Array();
+            for (var i = 0; i < volstanding.length; i++) {
+
+                var coords = volstanding[i].getPosition();
+                markerPointsTab.push(new MarkerPoints(coords.A, coords.F));
+                console.log(JSON.stringify(coords));
+                console.log("Wypisuje " + i);
+            }
+
+            console.log(markerPointsTab);
+            var json = JSON.stringify(markerPointsTab);
+            $("#MarkerPoints").val(json);
+        });
+
+        $("#route").click(function () {
+            console.log(blutvene);
+            var polylinePointsTab = new Array();
+        
+            for(var i = 0; i < blutvene.length; i++){
+              var temp = blutvene[i].getPath();
+              //console.log(JSON.stringify(temp))
+              console.log("Wypisuje " + i);
+              for(var j = 0; j < temp.length; j++) {
+                  console.log(temp.getAt(j));
+                  var coords = temp.getAt(j)
+                  polylinePointsTab.push(new PolylinePoints(coords.A, coords.F));
+                }
+            }
+
+            console.log(polylinePointsTab);
+            var json = JSON.stringify(polylinePointsTab);
+            $("#PolylinePoints").val(json);
+        });
+    });
+
+    function PolylinePoints(latitude, longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+
+    function MarkerPoints(latitude, longitude) {
+        this.latitude = latitude;
+        this.longitude = longitude;
+    }
+</script>
