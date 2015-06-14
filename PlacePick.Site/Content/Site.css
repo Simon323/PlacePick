@@ -22,3 +22,29 @@ select,
 textarea {
     max-width: 280px;
 }
+
+.main-content{
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    padding: 0px;
+}
+
+    #start-page-layer{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(255, 255, 255, 0.5);
+        z-index: 20;
+    }
+
+    #start-page-map{
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        z-index: 10;
+    }
+
+        #mapContainer{
+            height:100%;
+        }

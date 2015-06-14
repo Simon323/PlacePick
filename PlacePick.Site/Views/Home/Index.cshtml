@@ -2,7 +2,7 @@
     ViewBag.Title = "Home Page";
 }
 
-<div class="jumbotron">
+@*<div class="jumbotron">
     <h1>ASP.NET</h1>
     <p class="lead">ASP.NET is a free web framework for building great Web sites and Web applications using HTML, CSS and JavaScript.</p>
     <p><a href="http://asp.net" class="btn btn-primary btn-lg">Learn more &raquo;</a></p>
@@ -28,4 +28,88 @@
         <p>You can easily find a web hosting company that offers the right mix of features and price for your applications.</p>
         <p><a class="btn btn-default" href="http://go.microsoft.com/fwlink/?LinkId=301867">Learn more &raquo;</a></p>
     </div>
+</div>*@
+<div id="start-page-layer"></div>
+<div id="start-page-map">
+    <div id="mapContainer"></div>
 </div>
+
+<script type="text/javascript">
+
+	function showMap() {
+
+		//If HTML5 Geolocation Is Supported In This Browser
+	    if (navigator.geolocation) {
+
+		    //Use HTML5 Geolocation API To Get Current Position
+	        navigator.geolocation.getCurrentPosition(function(position){
+
+		        //Get Latitude From Geolocation API
+		        var latitude = position.coords.latitude;
+
+		        //Get Longitude From Geolocation API
+		        var longitude = position.coords.longitude;
+
+		        //Define New Google Map With Lat / Lon
+		        var coords = new google.maps.LatLng(latitude, longitude);
+
+		        //Specify Google Map Options
+		        var mapOptions = {
+		            zoom: 15,
+		            center: coords,
+		            mapTypeControl: true,
+		            navigationControlOptions: { style: google.maps.NavigationControlStyle.SMALL }, mapTypeId: google.maps.MapTypeId.ROADMAP,
+		            disableDefaultUI: true,
+		            zoomControl: false,
+		            scaleControl: false,
+		            mapTypeControlOptions: {
+		                mapTypeIds: []
+		            }, draggable: false, zoomControl: false, scrollwheel: false, disableDoubleClickZoom: true
+
+
+		        };
+		            map = new google.maps.Map(document.getElementById("mapContainer"), mapOptions);
+
+		        //var map = new google.maps.Map(document.getElementById('map'), {
+		        //    zoom: 1,
+		        //    /*center: new google.maps.LatLng(0.0, 0.0),*/
+		        //    center: new google.maps.LatLng(41.875696, -87.624207),
+		        //    mapTypeId: google.maps.MapTypeId.ROADMAP,
+		        //    disableDefaultUI: true,
+		        //    zoomControl: true
+		        //});
+
+		        var marker = new google.maps.Marker({
+		            position: coords,
+		            map: map,
+		            title: "You Are Here!"
+		    	});
+
+				}
+			);
+
+	    }else {
+
+		    //Otherwise - Gracefully Fall Back If Not Supported... Probably Best Not To Use A JS Alert Though :)
+	        alert("Geolocation API is not supported in your browser.");
+	    }
+
+	}
+
+	//Once Page Is Populated - Initiate jQuery
+	$(document).ready(function() {
+
+	  //Show The Map
+	  showMap();
+
+	  // When The Viewing Window Is Resized
+	  $(window).resize(function() {
+
+		  //CSS Resizes Container So Lets Recall The Map Function
+		  showMap();
+
+	  });
+
+	});
+
+</script>
