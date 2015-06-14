@@ -26,9 +26,11 @@ namespace PlacePick.Model.EntityModel
         public Nullable<int> ImageId { get; set; }
         public Nullable<int> AudioId { get; set; }
         public int RouteId { get; set; }
+        public string Latitude { get; set; }
+        public string Longitude { get; set; }
     
-        public virtual Route Route { get; set; }
         public virtual ICollection<Audio> Audios { get; set; }
         public virtual ICollection<Image> Images { get; set; }
+        public virtual Route Route { get; set; }
     }
 }

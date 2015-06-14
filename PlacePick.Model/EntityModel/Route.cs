@@ -23,14 +23,14 @@ namespace PlacePick.Model.EntityModel
     
         public int id { get; set; }
         public string Name { get; set; }
-        public System.DateTime Duration { get; set; }
+        public string Duration { get; set; }
         public string City { get; set; }
         public Nullable<int> CreatorId { get; set; }
         public string KML { get; set; }
     
         public virtual ICollection<Point> Points { get; set; }
+        public virtual User User { get; set; }
         public virtual ICollection<Vote> Votes { get; set; }
         public virtual ICollection<Tag> Tags { get; set; }
-        public virtual User User { get; set; }
     }
 }

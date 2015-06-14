@@ -7,13 +7,26 @@ namespace PlacePick.Site.Models
 {
     public class PolylinePoints
     {
-        public decimal latitude { get; set; }
-        public decimal longitude { get; set; }
+        public string latitude { get; set; }
+        public string longitude { get; set; }
     }
 
     public class MarkerPoints
     {
-        public decimal latitude { get; set; }
-        public decimal longitude { get; set; }
+        public int id { get; set; }
+        public string latitude { get; set; }
+        public string longitude { get; set; }
+    }
+
+    public class RouteModel
+    {
+        public string KML { get; set; }
+        public List<MarkerPoints> markerList { get; set; }
+
+        public RouteModel()
+        {
+            markerList = new List<MarkerPoints>();
+        }
+
     }
 }

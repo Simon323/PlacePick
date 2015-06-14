@@ -28,7 +28,6 @@ namespace PlacePick.Model.EntityModel
         public virtual DbSet<Audio> Audios { get; set; }
         public virtual DbSet<Image> Images { get; set; }
         public virtual DbSet<Point> Points { get; set; }
-        public virtual DbSet<Route> Routes { get; set; }
         public virtual DbSet<Tag> Tags { get; set; }
         public virtual DbSet<Vote> Votes { get; set; }
         public virtual DbSet<C__MigrationHistory> C__MigrationHistory { get; set; }
@@ -37,5 +36,6 @@ namespace PlacePick.Model.EntityModel
         public virtual DbSet<AspNetUserLogin> AspNetUserLogins { get; set; }
         public virtual DbSet<AspNetUser> AspNetUsers { get; set; }
         public virtual DbSet<User> Users { get; set; }
+        public virtual DbSet<Route> Routes { get; set; }
     }
 }

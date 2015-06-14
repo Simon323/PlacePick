@@ -16,8 +16,8 @@ namespace PlacePick.Model.EntityModel
     {
         public User()
         {
-            this.Routes = new HashSet<Route>();
             this.Votes = new HashSet<Vote>();
+            this.Routes = new HashSet<Route>();
         }
     
         public int id { get; set; }
@@ -26,7 +26,7 @@ namespace PlacePick.Model.EntityModel
         public string Surname { get; set; }
     
         public virtual AspNetUser AspNetUser { get; set; }
-        public virtual ICollection<Route> Routes { get; set; }
         public virtual ICollection<Vote> Votes { get; set; }
+        public virtual ICollection<Route> Routes { get; set; }
     }
 }

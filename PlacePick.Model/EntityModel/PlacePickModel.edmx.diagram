@@ -8,14 +8,10 @@
         <EntityTypeShape EntityType="PlacePickModel.Audio" Width="1.5" PointX="4.125" PointY="1" IsExpanded="true" />
         <EntityTypeShape EntityType="PlacePickModel.Image" Width="1.5" PointX="4.125" PointY="7.5" IsExpanded="true" />
         <EntityTypeShape EntityType="PlacePickModel.Point" Width="1.5" PointX="4" PointY="3.75" IsExpanded="true" />
-        <EntityTypeShape EntityType="PlacePickModel.Route" Width="1.5" PointX="12.5" PointY="3.875" IsExpanded="true" />
         <EntityTypeShape EntityType="PlacePickModel.Tag" Width="1.5" PointX="12.625" PointY="1.625" IsExpanded="true" />
         <EntityTypeShape EntityType="PlacePickModel.Vote" Width="1.5" PointX="8.625" PointY="4.375" IsExpanded="true" />
-        <AssociationConnector Association="PlacePickModel.FK_Points_Routes" ManuallyRouted="false" />
-        <AssociationConnector Association="PlacePickModel.FK_Votes_Routes" ManuallyRouted="false" />
         <AssociationConnector Association="PlacePickModel.AudiosInPoints" ManuallyRouted="false" />
         <AssociationConnector Association="PlacePickModel.ImagesInPoints" ManuallyRouted="false" />
-        <AssociationConnector Association="PlacePickModel.TagsInRoutes" ManuallyRouted="false" />
         <EntityTypeShape EntityType="PlacePickModel.C__MigrationHistory" Width="1.5" PointX="15" PointY="0.5" />
         <EntityTypeShape EntityType="PlacePickModel.AspNetRole" Width="1.5" PointX="0.875" PointY="0.875" />
         <EntityTypeShape EntityType="PlacePickModel.AspNetUserClaim" Width="1.5" PointX="2.5" PointY="11.5" />
@@ -25,9 +21,13 @@
         <AssociationConnector Association="PlacePickModel.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="PlacePickModel.FK_dbo_AspNetUserLogins_dbo_AspNetUsers_UserId" />
         <AssociationConnector Association="PlacePickModel.FK_Users_AspNetUsers" />
-        <AssociationConnector Association="PlacePickModel.FK_Routes_Users" />
         <AssociationConnector Association="PlacePickModel.FK_Votes_Users" />
         <AssociationConnector Association="PlacePickModel.AspNetUserRoles" />
+        <EntityTypeShape EntityType="PlacePickModel.Route" Width="1.5" PointX="10.875" PointY="6.5" />
+        <AssociationConnector Association="PlacePickModel.FK_Points_Routes" />
+        <AssociationConnector Association="PlacePickModel.FK_Routes_Users" />
+        <AssociationConnector Association="PlacePickModel.FK_Votes_Routes" />
+        <AssociationConnector Association="PlacePickModel.TagsInRoutes" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

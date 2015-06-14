@@ -11,5 +11,6 @@ namespace PlacePick.Model.Repository.Interfaces
     {
         void Add(Route route);
         void Save();
+        Route GetRouteById(int id);
     }
 }

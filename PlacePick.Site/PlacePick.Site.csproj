@@ -261,6 +261,7 @@
     <Content Include="Views\Routes\RoutesList.cshtml" />
     <Content Include="Views\Routes\RoutesAdd.cshtml" />
     <Content Include="Views\Routes\RoutesDetails.cshtml" />
+    <Content Include="Views\Routes\RoutesStepTwo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

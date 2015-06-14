@@ -11,5 +11,9 @@ namespace PlacePick.Model.Repository
 {
     public class RouteRepository : BaseDbContextRepository<Route, PlacePickEntities>, IRouteRepository
     {
+        public Route GetRouteById(int id)
+        {
+            return Items.Where(x => x.id == id).FirstOrDefault();
+        }
     }
 }

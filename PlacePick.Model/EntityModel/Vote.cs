@@ -18,7 +18,7 @@ namespace PlacePick.Model.EntityModel
         public int UserId { get; set; }
         public int Rate { get; set; }
     
-        public virtual Route Route { get; set; }
         public virtual User User { get; set; }
+        public virtual Route Route { get; set; }
     }
 }

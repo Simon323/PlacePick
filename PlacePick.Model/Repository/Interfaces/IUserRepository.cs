@@ -11,5 +11,6 @@ namespace PlacePick.Model.Repository.Interfaces
     {
         void Add(User user);
         void Save();
+        User getByASPUserEmail(string email);
     }
 }

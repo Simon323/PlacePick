@@ -112,6 +112,8 @@ warning 6002: The table/view 'PlacePick.dbo.ImagesInPoints' does not have a prim
           <Property Name="ImageId" Type="int" />
           <Property Name="AudioId" Type="int" />
           <Property Name="RouteId" Type="int" Nullable="false" />
+          <Property Name="Latitude" Type="nvarchar(max)" Nullable="false" />
+          <Property Name="Longitude" Type="nvarchar(max)" Nullable="false" />
         </EntityType>
         <EntityType Name="Routes">
           <Key>
@@ -119,7 +121,7 @@ warning 6002: The table/view 'PlacePick.dbo.ImagesInPoints' does not have a prim
           </Key>
           <Property Name="id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="Name" Type="nvarchar(max)" Nullable="false" />
-          <Property Name="Duration" Type="datetime" Nullable="false" />
+          <Property Name="Duration" Type="nvarchar(max)" Nullable="false" />
           <Property Name="City" Type="nvarchar(max)" Nullable="false" />
           <Property Name="CreatorId" Type="int" />
           <Property Name="KML" Type="nvarchar(max)" Nullable="false" />
@@ -492,24 +494,11 @@ warning 6002: The table/view 'PlacePick.dbo.TagsInRoutes' does not have a primar
           <Property Name="ImageId" Type="Int32" />
           <Property Name="AudioId" Type="Int32" />
           <Property Name="RouteId" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Route" Relationship="Self.FK_Points_Routes" FromRole="Points" ToRole="Routes" />
           <NavigationProperty Name="Audios" Relationship="Self.AudiosInPoints" FromRole="Points" ToRole="Audios" />
           <NavigationProperty Name="Images" Relationship="Self.ImagesInPoints" FromRole="Points" ToRole="Images" />
-        </EntityType>
-        <EntityType Name="Route">
-          <Key>
-            <PropertyRef Name="id" />
-          </Key>
-          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="Duration" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="City" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <Property Name="CreatorId" Type="Int32" />
-          <Property Name="KML" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Points" Relationship="Self.FK_Points_Routes" FromRole="Routes" ToRole="Points" />
-          <NavigationProperty Name="Votes" Relationship="Self.FK_Votes_Routes" FromRole="Routes" ToRole="Votes" />
-          <NavigationProperty Name="Tags" Relationship="Self.TagsInRoutes" FromRole="Routes" ToRole="Tags" />
-          <NavigationProperty Name="User" Relationship="PlacePickModel.FK_Routes_Users" FromRole="Route" ToRole="User" />
+          <NavigationProperty Name="Route" Relationship="PlacePickModel.FK_Points_Routes" FromRole="Point" ToRole="Route" />
+          <Property Name="Latitude" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Longitude" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
         </EntityType>
         <EntityType Name="Tag">
           <Key>
@@ -517,7 +506,7 @@ warning 6002: The table/view 'PlacePick.dbo.TagsInRoutes' does not have a primar
           </Key>
           <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
           <Property Name="Name" Type="String" MaxLength="Max" FixedLength="false" Unicode="true" Nullable="false" />
-          <NavigationProperty Name="Routes" Relationship="Self.TagsInRoutes" FromRole="Tags" ToRole="Routes" />
+          <NavigationProperty Name="Routes" Relationship="PlacePickModel.TagsInRoutes" FromRole="Tag" ToRole="Route" />
         </EntityType>
         <EntityType Name="Vote">
           <Key>
@@ -527,37 +516,9 @@ warning 6002: The table/view 'PlacePick.dbo.TagsInRoutes' does not have a primar
           <Property Name="RouteId" Type="Int32" Nullable="false" />
           <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="Rate" Type="Int32" Nullable="false" />
-          <NavigationProperty Name="Route" Relationship="Self.FK_Votes_Routes" FromRole="Votes" ToRole="Routes" />
           <NavigationProperty Name="User" Relationship="PlacePickModel.FK_Votes_Users" FromRole="Vote" ToRole="User" />
+          <NavigationProperty Name="Route" Relationship="PlacePickModel.FK_Votes_Routes" FromRole="Vote" ToRole="Route" />
         </EntityType>
-        <Association Name="FK_Points_Routes">
-          <End Role="Routes" Type="Self.Route" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Points" Type="Self.Point" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Routes">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Points">
-              <PropertyRef Name="RouteId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_Votes_Routes">
-          <End Role="Routes" Type="Self.Route" Multiplicity="1">
-            <OnDelete Action="Cascade" />
-          </End>
-          <End Role="Votes" Type="Self.Vote" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="Routes">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Votes">
-              <PropertyRef Name="RouteId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="AudiosInPoints">
           <End Role="Audios" Type="Self.Audio" Multiplicity="*" />
           <End Role="Points" Type="Self.Point" Multiplicity="*" />
@@ -566,25 +527,12 @@ warning 6002: The table/view 'PlacePick.dbo.TagsInRoutes' does not have a primar
           <End Role="Images" Type="Self.Image" Multiplicity="*" />
           <End Role="Points" Type="Self.Point" Multiplicity="*" />
         </Association>
-        <Association Name="TagsInRoutes">
-          <End Role="Routes" Type="Self.Route" Multiplicity="*" />
-          <End Role="Tags" Type="Self.Tag" Multiplicity="*" />
-        </Association>
         <EntityContainer Name="PlacePickEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="Audios" EntityType="Self.Audio" />
           <EntitySet Name="Images" EntityType="Self.Image" />
           <EntitySet Name="Points" EntityType="Self.Point" />
-          <EntitySet Name="Routes" EntityType="Self.Route" />
           <EntitySet Name="Tags" EntityType="Self.Tag" />
           <EntitySet Name="Votes" EntityType="Self.Vote" />
-          <AssociationSet Name="FK_Points_Routes" Association="Self.FK_Points_Routes">
-            <End Role="Routes" EntitySet="Routes" />
-            <End Role="Points" EntitySet="Points" />
-          </AssociationSet>
-          <AssociationSet Name="FK_Votes_Routes" Association="Self.FK_Votes_Routes">
-            <End Role="Routes" EntitySet="Routes" />
-            <End Role="Votes" EntitySet="Votes" />
-          </AssociationSet>
           <AssociationSet Name="AudiosInPoints" Association="Self.AudiosInPoints">
             <End Role="Audios" EntitySet="Audios" />
             <End Role="Points" EntitySet="Points" />
@@ -592,10 +540,6 @@ warning 6002: The table/view 'PlacePick.dbo.TagsInRoutes' does not have a primar
           <AssociationSet Name="ImagesInPoints" Association="Self.ImagesInPoints">
             <End Role="Images" EntitySet="Images" />
             <End Role="Points" EntitySet="Points" />
-          </AssociationSet>
-          <AssociationSet Name="TagsInRoutes" Association="Self.TagsInRoutes">
-            <End Role="Routes" EntitySet="Routes" />
-            <End Role="Tags" EntitySet="Tags" />
           </AssociationSet>
           <EntitySet Name="C__MigrationHistory" EntityType="PlacePickModel.C__MigrationHistory" />
           <EntitySet Name="AspNetRoles" EntityType="PlacePickModel.AspNetRole" />
@@ -615,10 +559,6 @@ warning 6002: The table/view 'PlacePick.dbo.TagsInRoutes' does not have a primar
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
             <End Role="User" EntitySet="Users" />
           </AssociationSet>
-          <AssociationSet Name="FK_Routes_Users" Association="PlacePickModel.FK_Routes_Users">
-            <End Role="User" EntitySet="Users" />
-            <End Role="Route" EntitySet="Routes" />
-          </AssociationSet>
           <AssociationSet Name="FK_Votes_Users" Association="PlacePickModel.FK_Votes_Users">
             <End Role="User" EntitySet="Users" />
             <End Role="Vote" EntitySet="Votes" />
@@ -626,6 +566,23 @@ warning 6002: The table/view 'PlacePick.dbo.TagsInRoutes' does not have a primar
           <AssociationSet Name="AspNetUserRoles" Association="PlacePickModel.AspNetUserRoles">
             <End Role="AspNetRole" EntitySet="AspNetRoles" />
             <End Role="AspNetUser" EntitySet="AspNetUsers" />
+          </AssociationSet>
+          <EntitySet Name="Routes" EntityType="PlacePickModel.Route" />
+          <AssociationSet Name="FK_Points_Routes" Association="PlacePickModel.FK_Points_Routes">
+            <End Role="Route" EntitySet="Routes" />
+            <End Role="Point" EntitySet="Points" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Routes_Users" Association="PlacePickModel.FK_Routes_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Route" EntitySet="Routes" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Votes_Routes" Association="PlacePickModel.FK_Votes_Routes">
+            <End Role="Route" EntitySet="Routes" />
+            <End Role="Vote" EntitySet="Votes" />
+          </AssociationSet>
+          <AssociationSet Name="TagsInRoutes" Association="PlacePickModel.TagsInRoutes">
+            <End Role="Route" EntitySet="Routes" />
+            <End Role="Tag" EntitySet="Tags" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="C__MigrationHistory">
@@ -697,8 +654,8 @@ warning 6002: The table/view 'PlacePick.dbo.TagsInRoutes' does not have a primar
           <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <Property Name="Surname" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
           <NavigationProperty Name="AspNetUser" Relationship="PlacePickModel.FK_Users_AspNetUsers" FromRole="User" ToRole="AspNetUser" />
-          <NavigationProperty Name="Routes" Relationship="PlacePickModel.FK_Routes_Users" FromRole="User" ToRole="Route" />
           <NavigationProperty Name="Votes" Relationship="PlacePickModel.FK_Votes_Users" FromRole="User" ToRole="Vote" />
+          <NavigationProperty Name="Routes" Relationship="PlacePickModel.FK_Routes_Users" FromRole="User" ToRole="Route" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Type="PlacePickModel.AspNetUser" Role="AspNetUser" Multiplicity="1">
@@ -742,18 +699,6 @@ warning 6002: The table/view 'PlacePick.dbo.TagsInRoutes' does not have a primar
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_Routes_Users">
-          <End Type="PlacePickModel.User" Role="User" Multiplicity="0..1" />
-          <End Type="PlacePickModel.Route" Role="Route" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="User">
-              <PropertyRef Name="id" />
-            </Principal>
-            <Dependent Role="Route">
-              <PropertyRef Name="CreatorId" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_Votes_Users">
           <End Type="PlacePickModel.User" Role="User" Multiplicity="1">
             <OnDelete Action="Cascade" />
@@ -771,6 +716,65 @@ warning 6002: The table/view 'PlacePick.dbo.TagsInRoutes' does not have a primar
         <Association Name="AspNetUserRoles">
           <End Type="PlacePickModel.AspNetRole" Role="AspNetRole" Multiplicity="*" />
           <End Type="PlacePickModel.AspNetUser" Role="AspNetUser" Multiplicity="*" />
+        </Association>
+        <EntityType Name="Route">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="Name" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="Duration" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="City" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <Property Name="CreatorId" Type="Int32" />
+          <Property Name="KML" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="true" />
+          <NavigationProperty Name="Points" Relationship="PlacePickModel.FK_Points_Routes" FromRole="Route" ToRole="Point" />
+          <NavigationProperty Name="User" Relationship="PlacePickModel.FK_Routes_Users" FromRole="Route" ToRole="User" />
+          <NavigationProperty Name="Votes" Relationship="PlacePickModel.FK_Votes_Routes" FromRole="Route" ToRole="Vote" />
+          <NavigationProperty Name="Tags" Relationship="PlacePickModel.TagsInRoutes" FromRole="Route" ToRole="Tag" />
+        </EntityType>
+        <Association Name="FK_Points_Routes">
+          <End Type="PlacePickModel.Route" Role="Route" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="PlacePickModel.Point" Role="Point" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Route">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Point">
+              <PropertyRef Name="RouteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Routes_Users">
+          <End Type="PlacePickModel.User" Role="User" Multiplicity="0..1" />
+          <End Type="PlacePickModel.Route" Role="Route" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Route">
+              <PropertyRef Name="CreatorId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Votes_Routes">
+          <End Type="PlacePickModel.Route" Role="Route" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Type="PlacePickModel.Vote" Role="Vote" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Route">
+              <PropertyRef Name="id" />
+            </Principal>
+            <Dependent Role="Vote">
+              <PropertyRef Name="RouteId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="TagsInRoutes">
+          <End Type="PlacePickModel.Route" Role="Route" Multiplicity="*" />
+          <End Type="PlacePickModel.Tag" Role="Tag" Multiplicity="*" />
         </Association>
       </Schema>
     </edmx:ConceptualModels>
@@ -799,24 +803,14 @@ warning 6002: The table/view 'PlacePick.dbo.TagsInRoutes' does not have a primar
           <EntitySetMapping Name="Points">
             <EntityTypeMapping TypeName="PlacePickModel.Point">
               <MappingFragment StoreEntitySet="Points">
+                <ScalarProperty Name="Longitude" ColumnName="Longitude" />
+                <ScalarProperty Name="Latitude" ColumnName="Latitude" />
                 <ScalarProperty Name="id" ColumnName="id" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="ImageId" ColumnName="ImageId" />
                 <ScalarProperty Name="AudioId" ColumnName="AudioId" />
                 <ScalarProperty Name="RouteId" ColumnName="RouteId" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="Routes">
-            <EntityTypeMapping TypeName="PlacePickModel.Route">
-              <MappingFragment StoreEntitySet="Routes">
-                <ScalarProperty Name="id" ColumnName="id" />
-                <ScalarProperty Name="Name" ColumnName="Name" />
-                <ScalarProperty Name="Duration" ColumnName="Duration" />
-                <ScalarProperty Name="City" ColumnName="City" />
-                <ScalarProperty Name="CreatorId" ColumnName="CreatorId" />
-                <ScalarProperty Name="KML" ColumnName="KML" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -851,14 +845,6 @@ warning 6002: The table/view 'PlacePick.dbo.TagsInRoutes' does not have a primar
             </EndProperty>
             <EndProperty Name="Points">
               <ScalarProperty Name="id" ColumnName="PointId" />
-            </EndProperty>
-          </AssociationSetMapping>
-          <AssociationSetMapping Name="TagsInRoutes" TypeName="PlacePickModel.TagsInRoutes" StoreEntitySet="TagsInRoutes">
-            <EndProperty Name="Routes">
-              <ScalarProperty Name="id" ColumnName="RouteId" />
-            </EndProperty>
-            <EndProperty Name="Tags">
-              <ScalarProperty Name="id" ColumnName="TagId" />
             </EndProperty>
           </AssociationSetMapping>
           <EntitySetMapping Name="C__MigrationHistory">
@@ -932,6 +918,26 @@ warning 6002: The table/view 'PlacePick.dbo.TagsInRoutes' does not have a primar
             </EndProperty>
             <EndProperty Name="AspNetRole">
               <ScalarProperty Name="Id" ColumnName="RoleId" />
+            </EndProperty>
+          </AssociationSetMapping>
+          <EntitySetMapping Name="Routes">
+            <EntityTypeMapping TypeName="PlacePickModel.Route">
+              <MappingFragment StoreEntitySet="Routes">
+                <ScalarProperty Name="KML" ColumnName="KML" />
+                <ScalarProperty Name="CreatorId" ColumnName="CreatorId" />
+                <ScalarProperty Name="City" ColumnName="City" />
+                <ScalarProperty Name="Duration" ColumnName="Duration" />
+                <ScalarProperty Name="Name" ColumnName="Name" />
+                <ScalarProperty Name="id" ColumnName="id" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <AssociationSetMapping Name="TagsInRoutes" TypeName="PlacePickModel.TagsInRoutes" StoreEntitySet="TagsInRoutes">
+            <EndProperty Name="Tag">
+              <ScalarProperty Name="id" ColumnName="TagId" />
+            </EndProperty>
+            <EndProperty Name="Route">
+              <ScalarProperty Name="id" ColumnName="RouteId" />
             </EndProperty>
           </AssociationSetMapping>
         </EntityContainerMapping>

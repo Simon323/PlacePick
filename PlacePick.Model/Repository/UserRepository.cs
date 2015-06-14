@@ -11,6 +11,9 @@ namespace PlacePick.Model.Repository
 {
     public class UserRepository : BaseDbContextRepository<User, PlacePickEntities>, IUserRepository
     {
-
+        public User getByASPUserEmail(string email)
+        {
+            return Entities.AspNetUsers.Where(x => x.Email == email).FirstOrDefault().Users.FirstOrDefault();
+        }
     }
 }
