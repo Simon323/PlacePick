@@ -3,10 +3,23 @@
     ViewBag.Title = "Home Page";
 }
 
-<div id="start-page-layer"></div>
+<div id="start-page-layer">
+    <div class="row" style="margin-top: 300px;">
+        <div class="col-xs-4 col-xs-offset-4" style="text-align:center; background-color: rgba(0,0,0,0.5); color:white; padding: 20px;"><h1>Zacznij tworzyć z Place Pick</h1></div>
+    </div>
+    <div class="row">
+        <div class="col-xs-4 col-xs-offset-4" style="text-align:center; background-color: rgba(0,0,0,0.5); color:white;   padding: 20px;"><h1>@Html.ActionLink("Zarejestruj się", "Register", "Account", routeValues: null, htmlAttributes: new { id = "registerLink" })</h1></div>
+    </div>
+</div>
 <div id="start-page-map">
     <div id="mapContainer"></div>
 </div>
+
+<style>
+    h1 > a{
+        color:white !important;
+    }
+</style>
 
 <script type="text/javascript">
 
