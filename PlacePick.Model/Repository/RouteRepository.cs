@@ -15,5 +15,10 @@ namespace PlacePick.Model.Repository
         {
             return Items.Where(x => x.id == id).FirstOrDefault();
         }
+
+        public List<Route> GatRoutesByCreatorId(int id)
+        {
+            return Items.Where(x => x.CreatorId == id).ToList();
+        }
     }
 }

@@ -1,5 +1,48 @@
-﻿<style>
-    .CSSTableGenerator {
+﻿@model List<PlacePick.Model.EntityModel.Route>
+
+<div class="CSSTableGenerator">
+    <table>
+        <tr>
+            <td>
+                Nazwa
+            </td>
+            <td>
+                Miasto
+            </td>
+            <td>
+                Czas
+            </td>
+            <td>
+                Szczegóły
+            </td>
+        </tr>
+        @foreach (var x in Model)
+        {
+            <text>
+                <tr>
+                    <td>
+                        @x.Name
+                    </td>
+                    <td>
+                        @x.City
+                    </td>
+                    <td>
+                        @x.Duration
+                    </td>
+                    <td>
+                        <a href="RoutesStepTwo?id=@x.id">Szczegóły</a>
+                    </td>
+                </tr>
+            </text>
+        }
+
+
+    </table>
+</div>
+
+
+<style>
+   .CSSTableGenerator {
 	margin:0px;padding:0px;
 	width:100%;
 	box-shadow: 10px 10px 5px #888888;
@@ -47,7 +90,7 @@
 }.CSSTableGenerator tr:hover td{
 	
 }
-.CSSTableGenerator tr:nth-child(odd){ background-color:#005fbf; }
+.CSSTableGenerator tr:nth-child(odd){ background-color:#007fff; }
 .CSSTableGenerator tr:nth-child(even)    { background-color:#ffffff; }.CSSTableGenerator td{
 	vertical-align:middle;
 	
@@ -68,11 +111,11 @@
 	border-width:0px 0px 0px 0px;
 }
 .CSSTableGenerator tr:first-child td{
-		background:-o-linear-gradient(bottom, #005fbf 5%, #005fbf 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #005fbf), color-stop(1, #005fbf) );
-	background:-moz-linear-gradient( center top, #005fbf 5%, #005fbf 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#005fbf", endColorstr="#005fbf");	background: -o-linear-gradient(top,#005fbf,005fbf);
+		background:-o-linear-gradient(bottom, #007fff 5%, #007fff 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #007fff), color-stop(1, #007fff) );
+	background:-moz-linear-gradient( center top, #007fff 5%, #007fff 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#007fff", endColorstr="#007fff");	background: -o-linear-gradient(top,#007fff,007fff);
 
-	background-color:#005fbf;
+	background-color:#007fff;
 	border:0px solid #000000;
 	text-align:center;
 	border-width:0px 0px 1px 1px;
@@ -82,11 +125,11 @@
 	color:#ffffff;
 }
 .CSSTableGenerator tr:first-child:hover td{
-	background:-o-linear-gradient(bottom, #005fbf 5%, #005fbf 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #005fbf), color-stop(1, #005fbf) );
-	background:-moz-linear-gradient( center top, #005fbf 5%, #005fbf 100% );
-	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#005fbf", endColorstr="#005fbf");	background: -o-linear-gradient(top,#005fbf,005fbf);
+	background:-o-linear-gradient(bottom, #007fff 5%, #007fff 100%);	background:-webkit-gradient( linear, left top, left bottom, color-stop(0.05, #007fff), color-stop(1, #007fff) );
+	background:-moz-linear-gradient( center top, #007fff 5%, #007fff 100% );
+	filter:progid:DXImageTransform.Microsoft.gradient(startColorstr="#007fff", endColorstr="#007fff");	background: -o-linear-gradient(top,#007fff,007fff);
 
-	background-color:#005fbf;
+	background-color:#007fff;
 }
 .CSSTableGenerator tr:first-child td:first-child{
 	border-width:0px 0px 1px 0px;

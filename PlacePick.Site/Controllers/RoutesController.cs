@@ -31,7 +31,7 @@ namespace PlacePick.Site.Controllers
         }
 
         [HttpPost]
-        public ActionResult RoutesAdd(string PolylinePoints, string MarkerPoints, string city, string duration, string name)
+        public ActionResult RoutesAdd(string PolylinePoints, string MarkerPoints, string CityName, string Duration, string RouteName)
         {
             string email = System.Web.HttpContext.Current.User.Identity.Name;
             User user = userRepository.getByASPUserEmail(email);
@@ -43,9 +43,9 @@ namespace PlacePick.Site.Controllers
             string guid = KMLProvider.GenerateKML(polylinePoints);
             Route route = new Route
             {
-                Name = name,
-                Duration = duration,
-                City = city,
+                Name = RouteName,
+                Duration = Duration,
+                City = CityName,
                 CreatorId = user.id,
                 KML = guid
             };
@@ -93,7 +93,12 @@ namespace PlacePick.Site.Controllers
 
         public ActionResult RoutesList()
         {
-            return View();
+            string email = System.Web.HttpContext.Current.User.Identity.Name;
+            User user = userRepository.getByASPUserEmail(email);
+
+            List<Route> routeList = routeRepository.GatRoutesByCreatorId(user.id);
+
+            return View(routeList);
         }
 
         public ActionResult RoutesDetails(int id)
