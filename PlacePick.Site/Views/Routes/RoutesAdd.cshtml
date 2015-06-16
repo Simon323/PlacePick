@@ -1,9 +1,11 @@
 ﻿<div id="panel">
     <div id="color-palette"></div>
+    <br />
     <div>
-        <button id="delete-button">Delete Selected Shape</button>
-        <button id="get-points">Get Points</button>
-        <button id="generate-kml">Generate KML</button>
+        <div style="display:none;">
+            <button id="delete-button">Delete Selected Shape</button>
+            <button id="get-points">Get Points</button>
+            <button id="generate-kml">Generate KML</button></div>
         <button id="points">Punkty</button>
         <button id="route">Trasa</button>
         @*<button id="next-step" type="submit">Dalej</button>*@
@@ -11,8 +13,11 @@
         {
             @Html.ValidationSummary(true)
             <fieldset>
+                Nazwa:
                 <input id="RouteName" name="RouteName" value="" />
+                Miasto:
                 <input id="CityName" name="CityName" value="" />
+                Długość:
                 <input id="Duration" name="Duration" value="" />
                 <input id="PolylinePoints" name="PolylinePoints" value="[]" type="hidden" />
                 <input id="MarkerPoints" name="MarkerPoints" value="[]" type="hidden" />
